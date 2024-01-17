@@ -3,15 +3,15 @@ const wordDisplay = document.querySelector('.word-display')
 const keyboardDiv = document.querySelector('.keyboard')
 const guessesText = document.querySelector(".guesses-text b")
 const gameModal = document.querySelector(".game-modal")
-const playAgainBtn = document.querySelector(".play-again")
+const playAgainBtn = gameModal.querySelector(".play-again")
 
-let currentWord,correctLetter, wrongGuessCount;
+let currentWord,correctLetter, wrongGuessCount = 0;
 const maxGuesses = 6;
 
 const resetGame = () => {
     correctLetter = [];
     wrongGuessCount = 0;
-    hangmanImage.src= `assets/hangman-${wrongGuessCount}.svg`;
+    hangmanImage.src= `assets/hangman-0.svg`;
     guessesText.innerText = `${wrongGuessCount} / ${maxGuesses}`;
     keyboardDiv.querySelectorAll("button").forEach(btn => btn.disabled = false)
     wordDisplay.innerHTML = currentWord.split("").map(()=> `<li class="letter"></li>`).join("");
@@ -312,9 +312,10 @@ const initGame = (button, clickedLetter) => {
         })
     }else{
         wrongGuessCount++;
-        
+        hangmanImage.src= `assets/hangman-${wrongGuessCount}.svg`;
     }
     button.disabled = true;
+    guessesText.innerText = `${wrongGuessCount} / ${maxGuesses}`;
 
     if(wrongGuessCount === maxGuesses) return gameOver(false)
     if(correctLetter.length === currentWord.length) return gameOver(true)
